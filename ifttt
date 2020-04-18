@@ -7,6 +7,21 @@ if [ "$1" == "" ]; then
 	exit 1
 fi
 
+conf=$HOME/.ifttt.json
+
+if [ ! -f $conf ]; then
+	echo "Missing configuration file: $conf" 1>&2
+	exit 1
+fi
+
+mode=$(stat -c "%a" $conf)
+if [ $mode -ne 600 -a $mode -ne 400 ]; then
+	echo "$conf must have 600 or 400 permissions" 2>&1
+	exit 1
+fi
+
+apiKey=$(<$conf jq -r '.api_key')
+
 event=$1
 payload='{}'
 index=1
