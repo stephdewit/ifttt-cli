@@ -36,4 +36,8 @@ until [ "$1" == "" -o $index -gt 3 ]; do
 	index=$(($index + 1))
 done
 
-echo $payload
+echo $payload | curl \
+	-sS --output /dev/null \
+	-H "Content-Type: application/json" \
+	--data @- \
+	https://maker.ifttt.com/trigger/$event/with/key/$apiKey
