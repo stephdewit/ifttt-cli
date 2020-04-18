@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" == "" ]; then
+	echo "Missing event" 1>&2
+	exit 1
+fi
+
+event=$1
+payload='{}'
+index=1
+
+shift
+until [ "$1" == "" -o $index -gt 3 ]; do
+	payload=$(
+		echo $payload | jq -c --arg value "$1" ". + { value$index: \$value }"
+	)
+
+	shift
+	index=$(($index + 1))
+done
+
+echo $payload
