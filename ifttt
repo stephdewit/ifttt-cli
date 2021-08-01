@@ -32,7 +32,7 @@ until [ "$1" = '' -o $index -gt 3 ]; do
 	)
 
 	shift
-	index=$(($index + 1))
+	index=$((index + 1))
 done
 
 echo "$payload" | curl \
