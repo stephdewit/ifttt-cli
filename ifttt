@@ -11,13 +11,13 @@ die() {
 
 conf=$HOME/.ifttt.json
 
-[ ! -f $conf ] && die "Missing configuration file: $conf"
+[ ! -f "$conf" ] && die "Missing configuration file: $conf"
 
-mode=$(stat -c '%a' $conf)
-[ $mode -ne 600 -a $mode -ne 400 ] && \
+mode=$(stat -c '%a' "$conf")
+[ "$mode" -ne 600 -a "$mode" -ne 400 ] && \
 	die "$conf must have 600 or 400 permissions"
 
-apiKey=$(<$conf jq -r .api_key)
+apiKey=$(<"$conf" jq -r .api_key)
 
 [ "$apiKey" = 'null' -o "$apiKey" = '' ] && die 'Missing API key'
 
@@ -35,8 +35,8 @@ until [ "$1" = '' -o $index -gt 3 ]; do
 	index=$(($index + 1))
 done
 
-echo $payload | curl \
+echo "$payload" | curl \
 	-sS --output /dev/null \
 	-H 'Content-Type: application/json' \
 	--data @- \
-	https://maker.ifttt.com/trigger/$event/with/key/$apiKey
+	"https://maker.ifttt.com/trigger/$event/with/key/$apiKey"
