@@ -7,7 +7,7 @@ die() {
 	exit 1
 }
 
-[ "$1" == '' ] && die 'Missing event'
+[ "$1" = '' ] && die 'Missing event'
 
 conf=$HOME/.ifttt.json
 
@@ -19,14 +19,14 @@ mode=$(stat -c '%a' $conf)
 
 apiKey=$(<$conf jq -r .api_key)
 
-[ "$apiKey" == 'null' -o "$apiKey" == '' ] && die 'Missing API key'
+[ "$apiKey" = 'null' -o "$apiKey" = '' ] && die 'Missing API key'
 
 event=$1
 payload='{}'
 index=1
 
 shift
-until [ "$1" == '' -o $index -gt 3 ]; do
+until [ "$1" = '' -o $index -gt 3 ]; do
 	payload=$(
 		echo $payload | jq -c --arg value "$1" ". + { value$index: \$value }"
 	)
